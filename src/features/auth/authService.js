@@ -1,11 +1,8 @@
-import axios from "axios";
+// import axios from "axios";
 
-const BASE_URL = "http://localhost:8081";
-const API_URL = "http://localhost:8081/api/auth/register";
-
-const my_axios = axios.create({
-    baseURL: BASE_URL,
-});
+// const BASE_URL = "http://localhost:8081";
+import axios from "../../axios/axios";
+const API_URL = "/api/auth/register";
 
 // Register User
 const register = async (userData) => {
