@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import WithNav from "./components/WithNav";
 import WithoutNav from "./components/WithoutNav";
@@ -20,6 +22,7 @@ function App() {
                     </Route>
                 </Routes>
             </Router>
+            <ToastContainer position="bottom-center" theme="colored" />
         </>
     );
 }
