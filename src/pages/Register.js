@@ -18,7 +18,9 @@ const Register = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { isSuccess, isError, message } = useSelector((state) => state.auth);
+    const { user, isSuccess, isError, message } = useSelector(
+        (state) => state.auth
+    );
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -44,6 +46,10 @@ const Register = () => {
     };
 
     useEffect(() => {
+        if (user) {
+            navigate("/dashboard");
+        }
+
         if (isError && isError.message) {
             toast.error(isError.message);
         }
@@ -53,7 +59,7 @@ const Register = () => {
             toast.success(message);
             dispatch(reset());
         }
-    }, [isError, isSuccess, message, navigate, dispatch]);
+    }, [isError, isSuccess, message, navigate, dispatch, user]);
 
     return (
         <div className="container">

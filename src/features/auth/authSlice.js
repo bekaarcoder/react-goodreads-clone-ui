@@ -25,6 +25,18 @@ export const register = createAsyncThunk(
     }
 );
 
+// Login User
+export const login = createAsyncThunk(
+    "auth/login",
+    async (userData, thunkAPI) => {
+        try {
+            return await authService.login(userData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
+
 export const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -55,6 +67,26 @@ export const authSlice = createSlice({
                 state.message = data.message
                     ? data.message
                     : "Some Error Occurred.";
+                state.isError = data;
+                console.log(action.payload);
+            })
+            .addCase(login.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(login.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = null;
+                state.message = "Hey! Welcome back 😎";
+                console.log(action.payload);
+            })
+            .addCase(login.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                const { data } = action.payload;
+                state.message = data.message
+                    ? data.message
+                    : "Invalid username or password";
                 state.isError = data;
                 console.log(action.payload);
             });
