@@ -7,6 +7,7 @@ import WithoutNav from "./components/WithoutNav";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
             <Router>
                 <Routes>
                     <Route element={<WithoutNav />}>
+                        <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                     </Route>

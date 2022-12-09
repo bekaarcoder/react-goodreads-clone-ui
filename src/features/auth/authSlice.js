@@ -37,6 +37,11 @@ export const login = createAsyncThunk(
     }
 );
 
+// Logout User
+export const logout = createAsyncThunk("auth/logout", async () => {
+    await authService.logout();
+});
+
 export const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -89,6 +94,9 @@ export const authSlice = createSlice({
                     : "Invalid username or password";
                 state.isError = data;
                 console.log(action.payload);
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.user = null;
             });
     },
 });

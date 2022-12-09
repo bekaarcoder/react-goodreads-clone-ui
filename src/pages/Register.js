@@ -64,8 +64,15 @@ const Register = () => {
     return (
         <div className="container">
             <div className="row justify-content-center my-5">
-                <div className="col-md-6">
-                    <h1 className="display-6 text-center">BetterReads</h1>
+                <div className="col-md-6 col-lg-5">
+                    <h1 className="display-6 text-center">
+                        <Link
+                            to="/"
+                            className="text-reset text-decoration-none"
+                        >
+                            BetterReads
+                        </Link>
+                    </h1>
                     <h3 className="text-center my-3">Create Account</h3>
                     <form className="mt-5" onSubmit={onSubmit}>
                         <div className="mb-3">

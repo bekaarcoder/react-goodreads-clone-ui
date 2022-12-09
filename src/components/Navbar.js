@@ -1,4 +1,17 @@
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout, reset } from "../features/auth/authSlice";
+
 const Navbar = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const doLogout = () => {
+        dispatch(logout());
+        dispatch(reset());
+        navigate("/");
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -37,16 +50,12 @@ const Navbar = () => {
                         </li>
                     </ul>
                     <ul className="navbar-nav mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <a className="nav-link" href="">
-                                Login
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="">
-                                Register
-                            </a>
-                        </li>
+                        <button
+                            className="btn btn-outline-light"
+                            onClick={doLogout}
+                        >
+                            Logout
+                        </button>
                     </ul>
                 </div>
             </div>
