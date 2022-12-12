@@ -3,8 +3,10 @@ import authService from "./authService";
 
 // Get user from localstorage
 const user = JSON.parse(localStorage.getItem("user"));
+const current = JSON.parse(localStorage.getItem("currentUser"));
 
 const initialState = {
+    current: current ? current : null,
     user: user ? user : null,
     isError: null,
     isSuccess: false,
@@ -41,6 +43,19 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async () => {
     await authService.logout();
 });
+
+// Get Current User
+export const getCurrentUser = createAsyncThunk(
+    "auth/getCurrentUser",
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.accessToken;
+            return await authService.getCurrentUser(token);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
 
 export const authSlice = createSlice({
     name: "auth",
@@ -83,6 +98,7 @@ export const authSlice = createSlice({
                 state.isSuccess = true;
                 state.isError = null;
                 state.message = "Hey! Welcome back 😎";
+                state.user = action.payload;
                 console.log(action.payload);
             })
             .addCase(login.rejected, (state, action) => {
@@ -97,6 +113,24 @@ export const authSlice = createSlice({
             })
             .addCase(logout.fulfilled, (state) => {
                 state.user = null;
+                state.current = null;
+            })
+            .addCase(getCurrentUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getCurrentUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = null;
+                console.log(action.payload);
+                state.current = action.payload;
+            })
+            .addCase(getCurrentUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                const { data } = action.payload;
+                state.isError = data;
+                state.current = null;
             });
     },
 });

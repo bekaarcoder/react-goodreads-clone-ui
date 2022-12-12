@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { reset, login } from "../features/auth/authSlice";
+import { reset, login, getCurrentUser } from "../features/auth/authSlice";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -47,6 +47,7 @@ const Login = () => {
 
     useEffect(() => {
         if (user) {
+            dispatch(getCurrentUser());
             navigate("/dashboard");
         }
         if (isError && isError.message) {

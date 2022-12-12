@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import AddBook from "./pages/AddBook";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     </Route>
                     <Route element={<WithNav />}>
                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/manage/books/add" element={<AddBook />} />
                     </Route>
                 </Routes>
             </Router>
