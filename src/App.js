@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import AddBook from "./pages/AddBook";
+import AddAuthor from "./pages/AddAuthor";
 
 function App() {
     return (
@@ -22,7 +23,14 @@ function App() {
                     </Route>
                     <Route element={<WithNav />}>
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/manage/books/add" element={<AddBook />} />
+                        <Route path="/manage">
+                            <Route path="books">
+                                <Route path="add" element={<AddBook />} />
+                            </Route>
+                            <Route path="authors">
+                                <Route path="add" element={<AddAuthor />} />
+                            </Route>
+                        </Route>
                     </Route>
                 </Routes>
             </Router>

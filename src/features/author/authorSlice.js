@@ -21,6 +21,19 @@ export const searchAuthor = createAsyncThunk(
     }
 );
 
+// Create Author
+export const createAuthor = createAsyncThunk(
+    "author/createAuthor",
+    async (authorData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.accessToken;
+            return await authorService.createAuthor(authorData, token);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
+
 export const authorSlice = createSlice({
     name: "author",
     initialState,
@@ -48,8 +61,26 @@ export const authorSlice = createSlice({
                 state.loading = false;
                 state.isSuccess = false;
                 state.isError = action.payload;
+            })
+            .addCase(createAuthor.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(createAuthor.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isError = null;
+                state.isSuccess = true;
+                state.message = "Author created successfully";
+            })
+            .addCase(createAuthor.rejected, (state, action) => {
+                state.loading = false;
+                const { data } = action.payload;
+                state.isError = data;
+                state.isSuccess = false;
+                console.log(action.payload);
             });
     },
 });
+
+export const { reset } = authorSlice.actions;
 
 export default authorSlice.reducer;
