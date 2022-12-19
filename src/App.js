@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import AddBook from "./pages/AddBook";
 import AddAuthor from "./pages/AddAuthor";
 import Protected from "./components/Protected";
+import BookList from "./pages/BookList";
 
 function App() {
     return (
@@ -24,14 +25,18 @@ function App() {
                     </Route>
                     <Route element={<WithNav />}>
                         <Route element={<Protected />}>
-                            <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/manage">
                                 <Route path="books">
+                                    <Route path="" element={<BookList />} />
                                     <Route path="add" element={<AddBook />} />
                                 </Route>
                                 <Route path="authors">
                                     <Route path="add" element={<AddAuthor />} />
                                 </Route>
+                                <Route
+                                    path="dashboard"
+                                    element={<Dashboard />}
+                                />
                             </Route>
                         </Route>
                     </Route>

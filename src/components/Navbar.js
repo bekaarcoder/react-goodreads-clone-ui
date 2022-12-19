@@ -15,9 +15,9 @@ const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">
+                <Link className="navbar-brand" to="/">
                     BetterReads
-                </a>
+                </Link>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -35,18 +35,19 @@ const Navbar = () => {
                 >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a
-                                className="nav-link active"
-                                aria-current="page"
-                                href="#"
-                            >
-                                Home
-                            </a>
+                            <Link className="nav-link" to="/manage/dashboard">
+                                Dashboard
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
-                                Link
-                            </a>
+                            <Link className="nav-link" to="/manage/books">
+                                Manage Books
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/manage/authors/add">
+                                Add Author
+                            </Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav mb-2 mb-lg-0">

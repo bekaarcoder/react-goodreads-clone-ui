@@ -48,7 +48,7 @@ const Login = () => {
     useEffect(() => {
         if (user) {
             dispatch(getCurrentUser());
-            navigate("/dashboard");
+            navigate("/manage/dashboard");
         }
         if (isError && isError.message) {
             toast.error(isError.message);

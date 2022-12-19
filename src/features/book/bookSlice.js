@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import bookService from "./bookService";
 
 const initialState = {
-    books: [],
+    book: [],
+    content: {},
     isLoading: false,
     isSuccess: false,
     isError: null,
@@ -16,6 +17,18 @@ export const addBook = createAsyncThunk(
         try {
             const token = thunkAPI.getState().auth.user.accessToken;
             return await bookService.addBook(token, bookData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
+
+// Get books
+export const getBooks = createAsyncThunk(
+    "book/getBooks",
+    async (_, thunkAPI) => {
+        try {
+            return await bookService.getBooks();
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response);
         }
@@ -51,6 +64,23 @@ export const bookSlice = createSlice({
                 const { data } = action.payload;
                 state.isError = data;
                 console.log(action.payload);
+            })
+            .addCase(getBooks.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getBooks.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = null;
+                state.content = action.payload;
+            })
+            .addCase(getBooks.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = false;
+                console.log(action.payload);
+                const { data } = action.payload;
+                state.isError = data;
+                state.content = {};
             });
     },
 });

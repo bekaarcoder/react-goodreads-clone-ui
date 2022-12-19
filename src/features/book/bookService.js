@@ -1,6 +1,7 @@
 import axios from "../../axios/axios";
 
 const ADD_BOOK_API_URL = "api/books";
+const GET_BOOKS_API_URL = "api/books";
 
 // Add book
 const addBook = async (token, bookData) => {
@@ -14,8 +15,15 @@ const addBook = async (token, bookData) => {
     return response.data;
 };
 
+// Get Books
+const getBooks = async () => {
+    const response = await axios.get(GET_BOOKS_API_URL);
+    return response.data;
+};
+
 const bookService = {
     addBook,
+    getBooks,
 };
 
 export default bookService;

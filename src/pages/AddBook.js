@@ -82,11 +82,11 @@ const AddBook = () => {
     };
 
     useEffect(() => {
-        if (isSuccess) {
+        if (isSuccess && message !== "") {
             toast.success(message);
             dispatch(reset());
         }
-    });
+    }, [dispatch, isSuccess, message]);
 
     return (
         <div className="container">
