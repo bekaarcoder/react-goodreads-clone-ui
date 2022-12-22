@@ -16,8 +16,10 @@ const addBook = async (token, bookData) => {
 };
 
 // Get Books
-const getBooks = async () => {
-    const response = await axios.get(GET_BOOKS_API_URL);
+const getBooks = async (pageNumber = 0) => {
+    const response = await axios.get(
+        `${GET_BOOKS_API_URL}?pageNumber=${pageNumber}`
+    );
     return response.data;
 };
 

@@ -10,6 +10,10 @@ const BookList = () => {
         (state) => state.book
     );
 
+    const fetchBooks = (pageNumber) => {
+        dispatch(getBooks(pageNumber));
+    };
+
     useEffect(() => {
         console.log("Fetching books...");
         dispatch(getBooks());
@@ -31,14 +35,14 @@ const BookList = () => {
                     >
                         Add Book
                     </Link>
-                    <table className="table table-striped table-hover table-responsive my-4">
+                    <table className="table table-striped table-hover table-responsive my-4 align-middle">
                         <thead className="table-dark">
                             <tr>
                                 <th>Name</th>
                                 <th>Cover Image</th>
                                 <th>Pages</th>
                                 <th>Published Date</th>
-                                <th></th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,6 +74,46 @@ const BookList = () => {
                             ))}
                         </tbody>
                     </table>
+                    <div className="d-flex justify-content-between">
+                        <nav>
+                            <ul className="pagination">
+                                <li className="page-item">
+                                    <span
+                                        className={
+                                            content.hasPrevious
+                                                ? "page-link"
+                                                : "page-link disabled"
+                                        }
+                                        onClick={() =>
+                                            fetchBooks(content?.currentPage - 1)
+                                        }
+                                        role="button"
+                                    >
+                                        Previous
+                                    </span>
+                                </li>
+                                <li className="page-item">
+                                    <span
+                                        className={
+                                            content.hasNext
+                                                ? "page-link"
+                                                : "page-link disabled"
+                                        }
+                                        onClick={() =>
+                                            fetchBooks(content?.currentPage + 1)
+                                        }
+                                        role="button"
+                                    >
+                                        Next
+                                    </span>
+                                </li>
+                            </ul>
+                        </nav>
+                        <p>
+                            Page {content?.currentPage + 1} of{" "}
+                            {content?.totalPages}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

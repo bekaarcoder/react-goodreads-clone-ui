@@ -26,9 +26,9 @@ export const addBook = createAsyncThunk(
 // Get books
 export const getBooks = createAsyncThunk(
     "book/getBooks",
-    async (_, thunkAPI) => {
+    async (pageNumber, thunkAPI) => {
         try {
-            return await bookService.getBooks();
+            return await bookService.getBooks(pageNumber);
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response);
         }
