@@ -45,8 +45,8 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/manage/authors/add">
-                                Add Author
+                            <Link className="nav-link" to="/manage/authors">
+                                Manage Authors
                             </Link>
                         </li>
                     </ul>

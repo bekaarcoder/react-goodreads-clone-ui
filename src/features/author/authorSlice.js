@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authorService from "./authorService";
 
 const initialState = {
-    authors: [],
+    author: [],
+    content: {},
     loading: false,
     isSuccess: false,
     isError: null,
@@ -28,6 +29,18 @@ export const createAuthor = createAsyncThunk(
         try {
             const token = thunkAPI.getState().auth.user.accessToken;
             return await authorService.createAuthor(authorData, token);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
+
+// Get All Authors
+export const getAuthors = createAsyncThunk(
+    "author/getAuthors",
+    async (pageNumber, thunkAPI) => {
+        try {
+            return await authorService.getAuthors(pageNumber);
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response);
         }
@@ -77,6 +90,22 @@ export const authorSlice = createSlice({
                 state.isError = data;
                 state.isSuccess = false;
                 console.log(action.payload);
+            })
+            .addCase(getAuthors.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getAuthors.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isSuccess = true;
+                state.isError = null;
+                state.content = action.payload;
+            })
+            .addCase(getAuthors.rejected, (state, action) => {
+                state.loading = false;
+                state.isSuccess = false;
+                const { data } = action.payload;
+                state.isError = data;
+                state.content = {};
             });
     },
 });

@@ -12,6 +12,7 @@ import AddBook from "./pages/AddBook";
 import AddAuthor from "./pages/AddAuthor";
 import Protected from "./components/Protected";
 import BookList from "./pages/BookList";
+import AuthorList from "./pages/AuthorList";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                                     <Route path="add" element={<AddBook />} />
                                 </Route>
                                 <Route path="authors">
+                                    <Route path="" element={<AuthorList />} />
                                     <Route path="add" element={<AddAuthor />} />
                                 </Route>
                                 <Route

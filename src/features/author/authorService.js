@@ -20,9 +20,17 @@ const createAuthor = async (authorData, token) => {
     return response.data;
 };
 
+const getAuthors = async (pageNumber = 0) => {
+    const response = await axios.get(
+        `${ADD_AUTHOR_API_URL}?pageNumber=${pageNumber}`
+    );
+    return response.data;
+};
+
 const authorService = {
     searchAuthor,
     createAuthor,
+    getAuthors,
 };
 
 export default authorService;
