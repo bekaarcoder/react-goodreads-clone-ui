@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { createAuthor, reset } from "../features/author/authorSlice";
+import authorService from "../features/author/authorService";
+import { reset, updateAuthor } from "../features/author/authorSlice";
 
 const initialState = {
     firstName: "",
@@ -10,14 +12,17 @@ const initialState = {
     bio: "",
 };
 
-const AddAuthor = () => {
-    const [formData, setFormData] = useState(initialState);
-    const { firstName, lastName, image, bio } = formData;
+const UpdateAuthor = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const { loading, isError, isSuccess, message } = useSelector(
         (state) => state.author
     );
+
+    const [formData, setFormData] = useState(initialState);
+    const { firstName, lastName, image, bio } = formData;
 
     const onChange = (e) => {
         setFormData((prevData) => ({
@@ -29,27 +34,58 @@ const AddAuthor = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         const authorData = {
+            id,
             firstName,
             lastName,
             image,
             bio,
         };
-        dispatch(createAuthor(authorData));
+        dispatch(updateAuthor(authorData));
     };
 
+    const fetchData = useCallback(
+        async (id) => {
+            try {
+                const data = await authorService.getAuthor(id);
+                console.log(data);
+                setFormData((prevData) => ({
+                    firstName: data.firstName ? data.firstName : "",
+                    lastName: data.lastName ? data.lastName : "",
+                    image: data.image ? data.image : "",
+                    bio: data.bio ? data.bio : "",
+                }));
+            } catch (error) {
+                console.log(error.response.data);
+                toast.error(error.response.data.message, {
+                    toastId: id,
+                });
+                navigate("/manage/authors");
+            }
+        },
+        [navigate]
+    );
+
     useEffect(() => {
+        fetchData(id);
+
         if (isSuccess && message !== "") {
-            toast.success(message);
-            dispatch(reset());
-            setFormData({ ...initialState });
+            toast.success(message, {
+                toastId: id,
+            });
+            navigate("/manage/authors");
         }
-    }, [isSuccess, dispatch, message]);
+
+        return () => {
+            dispatch(reset());
+        };
+    }, [id, dispatch, isSuccess, message, navigate, fetchData]);
+    if (loading) return <p className="my-5 text-center">Loading...</p>;
 
     return (
         <div className="container">
-            <div className="row justify-content-center my-5">
+            <div className="row my-5 justify-content-center">
                 <div className="col-md-6">
-                    <h2 className="text-center">Create Author</h2>
+                    <h2 className="text-center">Update Author</h2>
                     <form onSubmit={onSubmit}>
                         <div className="mb-3">
                             <label className="form-label">First Name</label>
@@ -103,7 +139,7 @@ const AddAuthor = () => {
                         </div>
                         <div className="d-grid">
                             <button className="btn btn-dark" type="submit">
-                                Create Author
+                                Update Author
                             </button>
                         </div>
                     </form>
@@ -113,4 +149,4 @@ const AddAuthor = () => {
     );
 };
 
-export default AddAuthor;
+export default UpdateAuthor;

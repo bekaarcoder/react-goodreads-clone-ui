@@ -63,9 +63,12 @@ const BookList = () => {
                                     <td>{book.pages}</td>
                                     <td>{book.publishedDate}</td>
                                     <td>
-                                        <button className="btn btn-sm btn-warning">
+                                        <Link
+                                            className="btn btn-sm btn-warning"
+                                            to={`/manage/books/update/${book.id}`}
+                                        >
                                             <i className="bi bi-pencil-square"></i>
-                                        </button>
+                                        </Link>
                                         <button className="btn btn-sm btn-danger ms-3">
                                             <i className="bi bi-trash"></i>
                                         </button>

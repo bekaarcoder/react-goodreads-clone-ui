@@ -27,10 +27,34 @@ const getAuthors = async (pageNumber = 0) => {
     return response.data;
 };
 
+const getAuthor = async (authorId) => {
+    const response = await axios.get(`${ADD_AUTHOR_API_URL}/${authorId}`);
+    return response.data;
+};
+
+const updateAuthor = async (authorData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const { id } = authorData;
+
+    const response = await axios.put(
+        `${ADD_AUTHOR_API_URL}/${id}`,
+        authorData,
+        config
+    );
+    return response.data;
+};
+
 const authorService = {
     searchAuthor,
     createAuthor,
     getAuthors,
+    getAuthor,
+    updateAuthor,
 };
 
 export default authorService;

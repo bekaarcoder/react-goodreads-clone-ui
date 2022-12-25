@@ -58,9 +58,12 @@ const AuthorList = () => {
                                         />
                                     </td>
                                     <td>
-                                        <button className="btn btn-sm btn-warning">
+                                        <Link
+                                            className="btn btn-sm btn-warning"
+                                            to={`/manage/authors/update/${author.id}`}
+                                        >
                                             <i className="bi bi-pencil-square"></i>
-                                        </button>
+                                        </Link>
                                         <button className="btn btn-sm btn-danger ms-3">
                                             <i className="bi bi-trash"></i>
                                         </button>

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authorService from "./authorService";
 
 const initialState = {
-    author: [],
+    author: null,
     content: {},
     loading: false,
     isSuccess: false,
@@ -47,6 +47,31 @@ export const getAuthors = createAsyncThunk(
     }
 );
 
+// Get Author by ID
+export const getAuthor = createAsyncThunk(
+    "author/getAuthor",
+    async (authorId, thunkAPI) => {
+        try {
+            return await authorService.getAuthor(authorId);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
+
+// Update author
+export const updateAuthor = createAsyncThunk(
+    "author/updateAuthor",
+    async (authorData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.accessToken;
+            return await authorService.updateAuthor(authorData, token);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response);
+        }
+    }
+);
+
 export const authorSlice = createSlice({
     name: "author",
     initialState,
@@ -56,6 +81,8 @@ export const authorSlice = createSlice({
             state.loading = false;
             state.isSuccess = false;
             state.message = "";
+            state.author = null;
+            state.content = {};
         },
     },
     extraReducers: (builder) => {
@@ -106,6 +133,39 @@ export const authorSlice = createSlice({
                 const { data } = action.payload;
                 state.isError = data;
                 state.content = {};
+            })
+            .addCase(getAuthor.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getAuthor.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isSuccess = true;
+                state.isError = null;
+                state.author = action.payload;
+            })
+            .addCase(getAuthor.rejected, (state, action) => {
+                state.loading = false;
+                state.isSuccess = false;
+                const { data } = action.payload;
+                state.isError = data;
+                state.author = null;
+            })
+            .addCase(updateAuthor.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(updateAuthor.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isSuccess = true;
+                state.isError = null;
+                state.message = "Author updated Successfully";
+            })
+            .addCase(updateAuthor.rejected, (state, action) => {
+                state.loading = false;
+                state.isSuccess = false;
+                console.log(action.payload);
+                const { data } = action.payload;
+                state.isError = data;
+                state.author = null;
             });
     },
 });

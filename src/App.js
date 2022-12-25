@@ -13,6 +13,8 @@ import AddAuthor from "./pages/AddAuthor";
 import Protected from "./components/Protected";
 import BookList from "./pages/BookList";
 import AuthorList from "./pages/AuthorList";
+import UpdateBook from "./pages/UpdateBook";
+import UpdateAuthor from "./pages/UpdateAuthor";
 
 function App() {
     return (
@@ -30,10 +32,18 @@ function App() {
                                 <Route path="books">
                                     <Route path="" element={<BookList />} />
                                     <Route path="add" element={<AddBook />} />
+                                    <Route
+                                        path="update/:id"
+                                        element={<UpdateBook />}
+                                    />
                                 </Route>
                                 <Route path="authors">
                                     <Route path="" element={<AuthorList />} />
                                     <Route path="add" element={<AddAuthor />} />
+                                    <Route
+                                        path="update/:id"
+                                        element={<UpdateAuthor />}
+                                    />
                                 </Route>
                                 <Route
                                     path="dashboard"
